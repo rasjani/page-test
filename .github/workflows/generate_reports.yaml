@@ -38,6 +38,7 @@ jobs:
 
     - name: Process artifact with foo
       run: |
+        find .
         robotdashboard -o output/output.xml -d ./db/robot_results.db -n index.html
 
     - name: Commit and push changes
