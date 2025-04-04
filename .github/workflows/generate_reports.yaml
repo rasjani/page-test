@@ -32,8 +32,10 @@ jobs:
     - name: Download artifact from triggering workflow
       uses: actions/download-artifact@v4
       with:
-        name: rfoutput  # <-- replace with your actual artifact name
-        path: output
+        name: rfoutput
+        path: output/
+        run-id: ${{ github.event.workflow_run.id }}
+        github-token:: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Process artifact with foo
       run: |
