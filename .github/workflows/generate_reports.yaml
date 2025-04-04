@@ -40,8 +40,8 @@ jobs:
 
     - name: Process artifact with foo
       run: |
-        find .
-        robotdashboard -o output/output.xml -d ./db/robot_results.db -n index.html
+        mkdir site
+        robotdashboard -o output/output.xml -d ./db/robot_results.db -n site/index.html
 
     - name: Commit and push changes
       run: |
@@ -55,8 +55,7 @@ jobs:
       uses: actions/upload-pages-artifact@v3
       with:
         # Upload entire repository
-        path: |
-          index.html
+        path: site
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
