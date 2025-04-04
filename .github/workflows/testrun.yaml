@@ -1,0 +1,35 @@
+name: Robot Framework Tests
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    env:
+      ROBOT_SYSLOG_LEVEL: debug
+    name: Robot Framework Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+        cache: 'pip'
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip setuptools wheel
+        python -m pip install  -r requirements.txt
+    - name: Run tests
+      run: |
+        set +e
+        python -robot tests/
+        fails=$?
+        set -e
+        ghareports -r output.xml || /bin/true
+    - name: COLLECT - Robot Results
+      uses: actions/upload-artifact@v4
+
+      with:
+        name: rfoutput
+        path: |
+          output.xml
