@@ -5,6 +5,10 @@ on:
     types:
       - completed
 
+concurrency:
+  group: ${{ github.workflow }}-site-generation
+  cancel-in-progress: false
+
 jobs:
   process-artifact:
     environment:
