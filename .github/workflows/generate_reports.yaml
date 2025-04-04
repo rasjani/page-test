@@ -9,8 +9,9 @@ on:
 jobs:
   process-artifact:
     runs-on: ubuntu-latest
-
     steps:
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
       - name: Checkout code
         uses: actions/checkout@v4
         with:
@@ -36,12 +37,21 @@ jobs:
         run: |
           ls -lat  output
           ls -lat  output/
-          # robotdashboard --output
+          robotdashboard -o output.xml -d ./db/robot_results.db -n index.html
 
       - name: Commit and push changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .
+          git add db/robot_results.db
           git diff --cached --quiet || git commit -m "Processed artifact and updated files"
           git push
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload entire repository
+          path: 'index.html'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
