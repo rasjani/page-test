@@ -22,7 +22,7 @@ jobs:
     - name: Run tests
       run: |
         set +e
-        python -robot tests/
+        python -mrobot tests/
         fails=$?
         set -e
         ghareports -r output.xml || /bin/true
